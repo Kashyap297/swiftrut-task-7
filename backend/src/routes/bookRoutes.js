@@ -7,39 +7,39 @@ const {
   deleteBook,
   borrowBook,
   returnBook,
-  getBooksByCreator, // New function for books by creator
-  getBooksByBorrowedUser, // New function for books by borrowed user
+  getBooksByCreator, // For books created by the logged-in user
+  getBooksByBorrowedUser, // For books borrowed by the logged-in user
 } = require("../controllers/bookControllers");
-const { protect } = require("../middlewares/authMiddleware"); // Import Auth Middleware
-const upload = require("../middlewares/uploadMiddleware"); // Import Shared Multer Middleware
+const { protect } = require("../middlewares/authMiddleware");
+const upload = require("../middlewares/uploadMiddleware"); // Middleware for handling file uploads
 
 const router = express.Router();
 
-// Add a new book (Protected route)
+// Add a new book (Protected)
 router.post("/", protect, upload.single("image"), addBook);
 
-// Get all books (Public route)
+// Get all books (Public)
 router.get("/", getBooks);
 
-// Get all books created by the logged-in user (Protected route)
-router.get("/mycreatedbooks", protect, getBooksByCreator); // New route for books created by the user
+// Get all books created by the logged-in user (Protected)
+router.get("/mycreatedbooks", protect, getBooksByCreator);
 
-// Get all books borrowed by the logged-in user (Protected route)
-router.get("/myborrowedbooks", protect, getBooksByBorrowedUser); // New route for books borrowed by the user
+// Get all books borrowed by the logged-in user (Protected)
+router.get("/myborrowedbooks", protect, getBooksByBorrowedUser);
 
-// Get book by ID (Public route)
+// Get book by ID (Public)
 router.get("/:id", getBookById);
 
-// Update a book (Protected route)
+// Update a book (Protected, only by creator)
 router.put("/:id", protect, upload.single("image"), updateBook);
 
-// Delete a book (Protected route)
+// Delete a book (Protected, only by creator)
 router.delete("/:id", protect, deleteBook);
 
-// Borrow a book (Protected route)
+// Borrow a book (Protected)
 router.post("/:id/borrow", protect, borrowBook);
 
-// Return a book (Protected route)
+// Return a book (Protected)
 router.post("/:id/return", protect, returnBook);
 
 module.exports = router;

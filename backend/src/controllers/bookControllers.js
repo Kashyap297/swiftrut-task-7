@@ -12,21 +12,23 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-// Create Book with Image Upload
+/// Create Book with Image Upload
 const addBook = async (req, res) => {
   try {
-    const { title, genre, publicationDate } = req.body;
+    const { title, author, genre, publicationDate, availableCopies } = req.body;
 
     // Get image URL from Multer
     const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
 
-    // Set author as the logged-in user
+    // Create the book and assign the logged-in user as the creator
     const book = await Book.create({
       title,
-      author: req.user.id, // Set author to the logged-in user's ID
+      author,
       genre,
       publicationDate,
-      imageUrl, // Save image URL to the database
+      availableCopies,
+      imageUrl,
+      createdBy: req.user.id, // The logged-in user is the creator of the book
     });
 
     res.status(201).json(book);
@@ -39,19 +41,28 @@ const addBook = async (req, res) => {
 const updateBook = async (req, res) => {
   try {
     const book = await Book.findById(req.params.id);
+
     if (!book) {
       return res.status(404).json({ message: "Book not found" });
     }
 
-    const { title, author, genre, publicationDate } = req.body;
+    // Ensure that only the user who created the book can update it
+    if (book.createdBy.toString() !== req.user.id) {
+      return res
+        .status(401)
+        .json({ message: "User not authorized to update this book" });
+    }
+
+    const { title, author, genre, publicationDate, availableCopies } = req.body;
 
     // Update fields
     book.title = title || book.title;
     book.author = author || book.author;
     book.genre = genre || book.genre;
     book.publicationDate = publicationDate || book.publicationDate;
+    book.availableCopies = availableCopies || book.availableCopies;
 
-    // Update image if new image is uploaded
+    // Update image if a new image is uploaded
     if (req.file) {
       book.imageUrl = `/uploads/${req.file.filename}`;
     }
@@ -63,7 +74,7 @@ const updateBook = async (req, res) => {
   }
 };
 
-// Get all books
+// Get all books (Public)
 const getBooks = async (req, res) => {
   try {
     const books = await Book.find();
@@ -73,31 +84,36 @@ const getBooks = async (req, res) => {
   }
 };
 
-// Get book by ID
+// Get book by ID (Public)
 const getBookById = async (req, res) => {
   try {
     const book = await Book.findById(req.params.id);
+
     if (!book) {
       return res.status(404).json({ message: "Book not found" });
     }
+
     res.status(200).json(book);
   } catch (error) {
     res.status(500).json({ message: "Error retrieving book", error });
   }
 };
 
-// Delete book
+// Delete book (Only the creator can delete)
 const deleteBook = async (req, res) => {
   try {
     const book = await Book.findById(req.params.id);
+
     if (!book) {
       return res.status(404).json({ message: "Book not found" });
     }
 
-    // Optionally: Add authorization check if only the creator can delete it
-    // if (book.author.toString() !== req.user.id) {
-    //   return res.status(401).json({ message: "User not authorized" });
-    // }
+    // Ensure only the creator can delete the book
+    if (book.createdBy.toString() !== req.user.id) {
+      return res
+        .status(401)
+        .json({ message: "User not authorized to delete this book" });
+    }
 
     await Book.deleteOne({ _id: req.params.id });
     res.status(200).json({ message: "Book deleted" });
@@ -105,20 +121,23 @@ const deleteBook = async (req, res) => {
     res.status(500).json({ message: "Error deleting book", error });
   }
 };
-
 // Borrow book
 const borrowBook = async (req, res) => {
   try {
     const book = await Book.findById(req.params.id);
+
     if (!book) {
       return res.status(404).json({ message: "Book not found" });
     }
-    if (!book.available) {
-      return res.status(400).json({ message: "Book is already borrowed" });
+
+    if (book.availableCopies <= 0) {
+      return res.status(400).json({ message: "No available copies to borrow" });
     }
 
-    book.available = false;
-    book.borrowedBy = req.user.id; // Set the borrower as the logged-in user
+    // Add the logged-in user to borrowedBy array and decrease available copies
+    book.borrowedBy.push(req.user.id);
+    book.availableCopies -= 1;
+
     await book.save();
 
     res.status(200).json({ message: "Book borrowed successfully" });
@@ -131,15 +150,23 @@ const borrowBook = async (req, res) => {
 const returnBook = async (req, res) => {
   try {
     const book = await Book.findById(req.params.id);
+
     if (!book) {
       return res.status(404).json({ message: "Book not found" });
     }
-    if (book.available) {
-      return res.status(400).json({ message: "Book is not borrowed" });
+
+    // Ensure the book was borrowed by the user
+    const index = book.borrowedBy.indexOf(req.user.id);
+    if (index === -1) {
+      return res
+        .status(400)
+        .json({ message: "Book not borrowed by this user" });
     }
 
-    book.available = true;
-    book.borrowedBy = null;
+    // Remove user from the borrowedBy array and increase available copies
+    book.borrowedBy.splice(index, 1);
+    book.availableCopies += 1;
+
     await book.save();
 
     res.status(200).json({ message: "Book returned successfully" });
@@ -148,11 +175,10 @@ const returnBook = async (req, res) => {
   }
 };
 
-// Get all books created by the logged-in user
+// Get all books added by the logged-in user
 const getBooksByCreator = async (req, res) => {
   try {
-    // Find all books created by the logged-in user (author)
-    const books = await Book.find({ author: req.user.id });
+    const books = await Book.find({ createdBy: req.user.id });
     res.status(200).json(books);
   } catch (error) {
     res
@@ -164,7 +190,6 @@ const getBooksByCreator = async (req, res) => {
 // Get all books borrowed by the logged-in user
 const getBooksByBorrowedUser = async (req, res) => {
   try {
-    // Find all books borrowed by the logged-in user (borrowedBy)
     const books = await Book.find({ borrowedBy: req.user.id });
     res.status(200).json(books);
   } catch (error) {
