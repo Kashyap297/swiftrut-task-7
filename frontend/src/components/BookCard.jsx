@@ -23,7 +23,7 @@ const BookCard = ({ book }) => {
             : "/no-image.png"
         }
         alt={book.title}
-        className="w-full h-64 object-cover"
+        className="w-full h-96 object-fit"
       />
 
       {/* Book Details */}

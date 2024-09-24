@@ -51,7 +51,7 @@ const MyBorrowedBooks = () => {
             You haven't borrowed any books yet.
           </p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {borrowedBooks.map((book) => (
               <div
                 key={book._id}
@@ -65,7 +65,7 @@ const MyBorrowedBooks = () => {
                         : "/no-image.png"
                     }
                     alt={book.title}
-                    className="w-full h-48 object-cover"
+                    className="w-full h-96 object-fit"
                   />
                   <div className="absolute bottom-0 left-0 bg-yellow-500 px-3 py-1 text-white font-semibold">
                     Borrowed
