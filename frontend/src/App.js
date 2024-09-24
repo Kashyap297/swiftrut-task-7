@@ -15,7 +15,7 @@ function App() {
     <AuthProvider>
       <Router>
         <Header />
-        <div className="container mx-auto mt-6">
+        <div className="">
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Home />} />
