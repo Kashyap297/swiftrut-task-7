@@ -1,13 +1,16 @@
 // src/pages/BookDetails.js
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import api from "../api/api"; // Import API instance
+import { AuthContext } from "../context/AuthContext"; // Import AuthContext for user
 
 const BookDetails = () => {
   const { id } = useParams(); // Get the book ID from the URL
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isBorrowed, setIsBorrowed] = useState(false); // Track if the user has borrowed the book
+  const { user } = useContext(AuthContext); // Get the logged-in user
 
   useEffect(() => {
     const fetchBookDetails = async () => {
@@ -15,6 +18,11 @@ const BookDetails = () => {
         const response = await api.get(`/books/${id}`); // Fetch book details by ID
         setBook(response.data);
         setLoading(false);
+
+        // Check if the book is borrowed by the current user
+        if (response.data.borrowedBy.includes(user._id)) {
+          setIsBorrowed(true); // If the user has already borrowed the book
+        }
       } catch (err) {
         setError("Error fetching book details");
         setLoading(false);
@@ -22,7 +30,35 @@ const BookDetails = () => {
     };
 
     fetchBookDetails();
-  }, [id]);
+  }, [id, user]);
+
+  // Handle Borrow Book action
+  const handleBorrow = async () => {
+    try {
+      await api.post(`/books/${id}/borrow`);
+      setIsBorrowed(true); // Update state to reflect the book has been borrowed
+      setBook((prevBook) => ({
+        ...prevBook,
+        availableCopies: prevBook.availableCopies - 1,
+      }));
+    } catch (err) {
+      setError("Error borrowing book");
+    }
+  };
+
+  // Handle Return Book action
+  const handleReturn = async () => {
+    try {
+      await api.post(`/books/${id}/return`);
+      setIsBorrowed(false); // Update state to reflect the book has been returned
+      setBook((prevBook) => ({
+        ...prevBook,
+        availableCopies: prevBook.availableCopies + 1,
+      }));
+    } catch (err) {
+      setError("Error returning book");
+    }
+  };
 
   if (loading) return <div>Loading book details...</div>;
   if (error) return <div>{error}</div>;
@@ -50,6 +86,31 @@ const BookDetails = () => {
             Available Copies: {book.availableCopies}
           </p>
           <p className="text-gray-600 mt-4">{book.description}</p>
+
+          {/* Display either the Borrow or Return button */}
+          {user && (
+            <div className="mt-4">
+              {isBorrowed ? (
+                <button
+                  onClick={handleReturn}
+                  className="bg-red-500 text-white px-4 py-2 rounded-md"
+                >
+                  Return Book
+                </button>
+              ) : book.availableCopies > 0 ? (
+                <button
+                  onClick={handleBorrow}
+                  className="bg-green-500 text-white px-4 py-2 rounded-md"
+                >
+                  Borrow Book
+                </button>
+              ) : (
+                <p className="text-red-500">
+                  No copies available for borrowing
+                </p>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>
