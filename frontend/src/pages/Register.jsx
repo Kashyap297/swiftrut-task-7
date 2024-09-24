@@ -35,7 +35,7 @@ const Register = () => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-orange-400 to-pink-400 min-h-screen flex justify-center items-center">
+    <div className="bg-gray-100 min-h-screen flex justify-center items-center">
       <div className="bg-white p-8 rounded-lg shadow-lg w-96">
         <h2 className="text-2xl font-bold text-center mb-4">Register</h2>
         <p className="text-center text-gray-600 mb-4">
@@ -93,14 +93,14 @@ const Register = () => {
           </div>
           <button
             type="submit"
-            className="bg-purple-500 text-white py-2 px-4 rounded-md w-full"
+            className="bg-gray-800 hover:bg-gray-900 text-white py-2 px-4 rounded-md w-full"
           >
             Sign up
           </button>
         </form>
         <p className="text-center text-gray-600 mt-4">
           Have an account?{" "}
-          <Link to="/login" className="text-purple-500">
+          <Link to="/login" className="text-rose-500">
             Log in
           </Link>
         </p>
