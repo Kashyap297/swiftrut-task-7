@@ -10,7 +10,7 @@ const BookDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isBorrowed, setIsBorrowed] = useState(false); // Track if the user has borrowed the book
-  const { user } = useContext(AuthContext); // Get the logged-in user
+  const { user } = useContext(AuthContext); // Get the logged-in user (can be null if not logged in)
 
   useEffect(() => {
     const fetchBookDetails = async () => {
@@ -19,8 +19,8 @@ const BookDetails = () => {
         setBook(response.data);
         setLoading(false);
 
-        // Check if the book is borrowed by the current user
-        if (response.data.borrowedBy.includes(user._id)) {
+        // Check if the book is borrowed by the current user (if user is logged in)
+        if (user && response.data.borrowedBy.includes(user._id)) {
           setIsBorrowed(true); // If the user has already borrowed the book
         }
       } catch (err) {
@@ -32,7 +32,7 @@ const BookDetails = () => {
     fetchBookDetails();
   }, [id, user]);
 
-  // Handle Borrow Book action
+  // Handle Borrow Book action (only for logged-in users)
   const handleBorrow = async () => {
     try {
       await api.post(`/books/${id}/borrow`);
@@ -46,7 +46,7 @@ const BookDetails = () => {
     }
   };
 
-  // Handle Return Book action
+  // Handle Return Book action (only for logged-in users)
   const handleReturn = async () => {
     try {
       await api.post(`/books/${id}/return`);
@@ -87,7 +87,7 @@ const BookDetails = () => {
           </p>
           <p className="text-gray-600 mt-4">{book.description}</p>
 
-          {/* Display either the Borrow or Return button */}
+          {/* Display either the Borrow or Return button if the user is logged in */}
           {user && (
             <div className="mt-4">
               {isBorrowed ? (
