@@ -1,11 +1,41 @@
+// src/App.js
 import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Header from "./components/Header";
+import Home from "./pages/Home";
+import Books from "./pages/Books";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import PrivateRoute from "./components/PrivateRoute";
+import PublicRoute from "./components/PublicRoute";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
   return (
-    <div className="bg-blue-500 text-white p-6">
-      <h1 className="text-4xl font-bold">Hello, Tailwind CSS!</h1>
-      <p className="mt-4">This is a React app styled with Tailwind CSS.</p>
-    </div>
+    <AuthProvider>
+      <Router>
+        <Header />
+        <div className="container mx-auto mt-6">
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/" element={<Home />} />
+            <Route path="/books" element={<Books />} />
+
+            {/* Public routes for Login and Register */}
+            <Route element={<PublicRoute />}>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+            </Route>
+
+            {/* Protected routes */}
+            <Route element={<PrivateRoute />}>
+              <Route path="/my-books" element={<div>My Books</div>} />
+              <Route path="/edit-book/:id" element={<div>Edit Book</div>} />
+            </Route>
+          </Routes>
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 
