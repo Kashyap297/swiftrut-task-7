@@ -1,9 +1,20 @@
 // src/components/BookCard.js
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const BookCard = ({ book }) => {
+  const navigate = useNavigate();
+
+  // Redirect to book details on click
+  const handleClick = () => {
+    navigate(`/books/${book._id}`);
+  };
+
   return (
-    <div className="border p-4 rounded shadow-md">
+    <div
+      onClick={handleClick} // Add onClick handler
+      className="border p-4 rounded shadow-md cursor-pointer hover:bg-gray-100"
+    >
       <img
         src={
           book.imageUrl
