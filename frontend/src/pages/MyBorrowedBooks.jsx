@@ -41,37 +41,55 @@ const MyBorrowedBooks = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">My Borrowed Books</h1>
+    <div className="container mx-auto p-8">
+      <h1 className="text-4xl font-bold text-blue-600 mb-6">
+        My Borrowed Books
+      </h1>
       {borrowedBooks.length === 0 ? (
-        <p>You haven't borrowed any books yet.</p>
+        <p className="text-xl text-gray-600">
+          You haven't borrowed any books yet.
+        </p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {borrowedBooks.map((book) => (
-            <div key={book._id} className="border p-4 rounded shadow-md">
-              <img
-                src={
-                  book.imageUrl
-                    ? `http://localhost:8000${book.imageUrl}`
-                    : "/no-image.png"
-                }
-                alt={book.title}
-                className="w-full h-48 object-cover mb-4"
-              />
-              <h2 className="text-xl font-bold">{book.title}</h2>
-              <p className="text-gray-600">{book.author}</p>
-              <p className="text-gray-600">Genre: {book.genre}</p>
-              <p className="text-gray-600">
-                Available Copies: {book.availableCopies}
-              </p>
+            <div
+              key={book._id}
+              className="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+            >
+              <div className="relative">
+                <img
+                  src={
+                    book.imageUrl
+                      ? `http://localhost:8000${book.imageUrl}`
+                      : "/no-image.png"
+                  }
+                  alt={book.title}
+                  className="w-full h-48 object-cover"
+                />
+                <div className="absolute bottom-0 left-0 bg-yellow-500 px-3 py-1 text-white font-semibold">
+                  Borrowed
+                </div>
+              </div>
+              <div className="p-6">
+                <h2 className="text-2xl font-bold mb-2">{book.title}</h2>
+                <p className="text-gray-600 text-lg mb-2">By {book.author}</p>
+                <p className="text-gray-500 mb-2">Genre: {book.genre}</p>
+                <p className="text-gray-500 mb-2">
+                  Published:{" "}
+                  {new Date(book.publicationDate).toLocaleDateString()}
+                </p>
+                <p className="text-gray-500 mb-4">
+                  Available Copies: {book.availableCopies}
+                </p>
 
-              {/* Return book button */}
-              <button
-                onClick={() => handleReturn(book._id)}
-                className="mt-4 bg-red-500 text-white py-2 px-4 rounded-md"
-              >
-                Return Book
-              </button>
+                {/* Return book button */}
+                <button
+                  onClick={() => handleReturn(book._id)}
+                  className="bg-red-500 text-white px-4 py-2 rounded-lg w-full hover:bg-red-600 transition-colors duration-300"
+                >
+                  Return Book
+                </button>
+              </div>
             </div>
           ))}
         </div>

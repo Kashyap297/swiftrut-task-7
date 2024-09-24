@@ -57,81 +57,89 @@ const AddBook = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <div className="max-w-md mx-auto bg-white p-6 rounded-md shadow-md">
-        <h2 className="text-2xl font-bold mb-4">Add a New Book</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
+          Add a New Book
+        </h2>
         {error && <div className="text-red-500 mb-4">{error}</div>}
         {success && <div className="text-green-500 mb-4">{success}</div>}
         <form onSubmit={handleSubmit} encType="multipart/form-data">
           <div className="mb-4">
-            <label className="block text-gray-700">Title</label>
+            <label className="block text-gray-700 font-semibold">Title</label>
             <input
               type="text"
               name="title"
               value={formData.title}
               onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-md"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
               required
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700">Author</label>
+            <label className="block text-gray-700 font-semibold">Author</label>
             <input
               type="text"
               name="author"
               value={formData.author}
               onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-md"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
               required
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700">Genre</label>
+            <label className="block text-gray-700 font-semibold">Genre</label>
             <input
               type="text"
               name="genre"
               value={formData.genre}
               onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-md"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
               required
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700">Publication Date</label>
+            <label className="block text-gray-700 font-semibold">
+              Publication Date
+            </label>
             <input
               type="date"
               name="publicationDate"
               value={formData.publicationDate}
               onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-md"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
               required
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700">Available Copies</label>
+            <label className="block text-gray-700 font-semibold">
+              Available Copies
+            </label>
             <input
               type="number"
               name="availableCopies"
               value={formData.availableCopies}
               onChange={handleChange}
               min="1"
-              className="w-full px-3 py-2 border rounded-md"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
               required
             />
           </div>
-          <div className="mb-4">
-            <label className="block text-gray-700">Book Cover Image</label>
+          <div className="mb-6">
+            <label className="block text-gray-700 font-semibold">
+              Book Cover Image
+            </label>
             <input
               type="file"
               name="image"
               accept="image/*"
               onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-md"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
             />
           </div>
           <button
             type="submit"
-            className="bg-blue-500 text-white py-2 px-4 rounded-md"
+            className="w-full bg-gray-800 text-white py-2 rounded-lg font-semibold hover:bg-gray-900 transition duration-300"
           >
             Add Book
           </button>

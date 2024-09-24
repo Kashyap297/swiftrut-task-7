@@ -18,7 +18,7 @@ function App() {
     <AuthProvider>
       <Router>
         <Header />
-        <div className="p-4">
+        <div className="">
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Home />} />

@@ -176,9 +176,13 @@ const returnBook = async (req, res) => {
 };
 
 // Get all books added by the logged-in user
+// Get all books added by the logged-in user
 const getBooksByCreator = async (req, res) => {
   try {
-    const books = await Book.find({ createdBy: req.user.id });
+    const books = await Book.find({ createdBy: req.user.id })
+      .populate("createdBy", "name email") // Populate creator details
+      .populate("borrowedBy", "name email"); // Populate borrower details
+
     res.status(200).json(books);
   } catch (error) {
     res

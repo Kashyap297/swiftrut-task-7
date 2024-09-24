@@ -28,11 +28,16 @@ const Home = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="container mx-auto">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-4">
-        {books.map((book) => (
-          <BookCard key={book._id} book={book} />
-        ))}
+    <div className="bg-gray-50 py-16">
+      <div className="container mx-auto">
+        <h2 className="text-4xl font-bold text-gray-800 text-center mb-12">
+          Explore Our Popular Books
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 p-4">
+          {books.map((book) => (
+            <BookCard key={book._id} book={book} />
+          ))}
+        </div>
       </div>
     </div>
   );

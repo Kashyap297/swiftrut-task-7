@@ -64,53 +64,80 @@ const BookDetails = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="container mx-auto p-4">
-      {book && (
-        <div className="border p-4 rounded shadow-md">
-          <img
-            src={
-              book.imageUrl
-                ? `http://localhost:8000${book.imageUrl}`
-                : "/no-image.png"
-            }
-            alt={book.title}
-            className="w-full h-96 object-cover mb-4"
-          />
-          <h2 className="text-3xl font-bold mb-2">{book.title}</h2>
-          <p className="text-gray-600 text-lg">Author: {book.author}</p>
-          <p className="text-gray-600 text-lg">Genre: {book.genre}</p>
-          <p className="text-gray-600 text-lg">
-            Published: {new Date(book.publicationDate).toLocaleDateString()}
-          </p>
-          <p className="text-gray-600 text-lg">
-            Available Copies: {book.availableCopies}
-          </p>
-          <p className="text-gray-600 mt-4">{book.description}</p>
+    <div className="container mx-auto p-6">
+      <div className="text-center mb-8">
+        <h1 className="text-5xl font-bold text-blue-800">Book Details</h1>
+        <p className="text-gray-600 text-xl mt-2">
+          Discover the story behind this book
+        </p>
+      </div>
 
-          {/* Display either the Borrow or Return button if the user is logged in */}
-          {user && (
-            <div className="mt-4">
-              {isBorrowed ? (
-                <button
-                  onClick={handleReturn}
-                  className="bg-red-500 text-white px-4 py-2 rounded-md"
-                >
-                  Return Book
-                </button>
-              ) : book.availableCopies > 0 ? (
-                <button
-                  onClick={handleBorrow}
-                  className="bg-green-500 text-white px-4 py-2 rounded-md"
-                >
-                  Borrow Book
-                </button>
-              ) : (
-                <p className="text-red-500">
-                  No copies available for borrowing
-                </p>
-              )}
+      {book && (
+        <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-evenly lg:items-center p-6 bg-white">
+          {/* Book Details - Left Side */}
+          <div className="lg:w-1/3 w-full text-left">
+            <h2 className="text-4xl font-bold mb-4 text-gray-800">
+              {book.title}
+            </h2>
+            <p className="text-lg font-semibold text-gray-600 mb-4">
+              By {book.author}
+            </p>
+
+            <div className="mb-6">
+              <p className="text-lg text-gray-500">
+                <strong>Genre:</strong> {book.genre}
+              </p>
+              <p className="text-lg text-gray-500">
+                <strong>Published:</strong>{" "}
+                {new Date(book.publicationDate).toLocaleDateString()}
+              </p>
+              <p className="text-lg text-gray-500">
+                <strong>Available Copies:</strong> {book.availableCopies}
+              </p>
             </div>
-          )}
+
+            <p className="text-lg text-gray-700 mb-6">{book.description}</p>
+
+            {/* Borrow or Return Book Buttons */}
+            {user && (
+              <div className="mt-4">
+                {isBorrowed ? (
+                  <button
+                    onClick={handleReturn}
+                    className="bg-red-500 text-white px-6 py-3 rounded-md hover:bg-red-600 transition duration-300"
+                  >
+                    Return Book
+                  </button>
+                ) : book.availableCopies > 0 ? (
+                  <button
+                    onClick={handleBorrow}
+                    className="bg-green-500 text-white px-6 py-3 rounded-md hover:bg-green-600 transition duration-300"
+                  >
+                    Borrow Book
+                  </button>
+                ) : (
+                  <p className="text-red-500 text-lg">
+                    No copies available for borrowing
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Book Image - Right Side */}
+          <div className="lg:w-1/3 w-full flex justify-center lg:justify-end">
+            <div className="relative p-6 border-8 border-yellow-500">
+              <img
+                src={
+                  book.imageUrl
+                    ? `http://localhost:8000${book.imageUrl}`
+                    : "/no-image.png"
+                }
+                alt={book.title}
+                className="w-full h-auto object-cover"
+              />
+            </div>
+          </div>
         </div>
       )}
     </div>

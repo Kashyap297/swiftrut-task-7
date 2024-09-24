@@ -1,7 +1,7 @@
 // src/components/Header.js
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext"; // Import AuthContext for user state
+import { AuthContext } from "../context/AuthContext";
 import {
   FaSignInAlt,
   FaUserPlus,
@@ -9,10 +9,10 @@ import {
   FaPlus,
   FaBook,
   FaBookReader,
-} from "react-icons/fa"; // Icons for login/register/logout and additional options
+} from "react-icons/fa";
 
 const Header = () => {
-  const { user, logout } = useContext(AuthContext); // Access user and logout from AuthContext
+  const { user, logout } = useContext(AuthContext);
 
   return (
     <header className="bg-gray-800 text-white p-4 flex justify-between items-center">
@@ -28,11 +28,16 @@ const Header = () => {
         {user && (
           <ul className="flex space-x-4">
             <li>
+              <Link to="/" className="hover:text-yellow-500 flex items-center">
+                <FaBook className="inline mr-1" aria-hidden="true" /> All Books
+              </Link>
+            </li>
+            <li>
               <Link
                 to="/add-book"
                 className="hover:text-yellow-500 flex items-center"
               >
-                <FaPlus className="inline mr-1" /> Add E-book
+                <FaPlus className="inline mr-1" aria-hidden="true" /> Add E-book
               </Link>
             </li>
             <li>
@@ -40,7 +45,8 @@ const Header = () => {
                 to="/my-books"
                 className="hover:text-yellow-500 flex items-center"
               >
-                <FaBook className="inline mr-1" /> View My E-books
+                <FaBook className="inline mr-1" aria-hidden="true" /> View My
+                E-books
               </Link>
             </li>
             <li>
@@ -48,7 +54,8 @@ const Header = () => {
                 to="/my-borrowed-books"
                 className="hover:text-yellow-500 flex items-center"
               >
-                <FaBookReader className="inline mr-1" /> My Borrowed Books
+                <FaBookReader className="inline mr-1" aria-hidden="true" /> My
+                Borrowed Books
               </Link>
             </li>
           </ul>
@@ -60,25 +67,19 @@ const Header = () => {
         {!user ? (
           <div className="flex space-x-4">
             <Link to="/login" className="hover:text-yellow-500">
-              <FaSignInAlt className="inline mr-1" /> Login
+              <FaSignInAlt className="inline mr-1" aria-hidden="true" /> Login
             </Link>
             <Link to="/register" className="hover:text-yellow-500">
-              <FaUserPlus className="inline mr-1" /> Register
+              <FaUserPlus className="inline mr-1" aria-hidden="true" /> Register
             </Link>
           </div>
         ) : (
-          <>
-            {/* Display logged-in user's name */}
-            <span className="text-yellow-500">{user.username}</span>
-
-            {/* Logout Button */}
-            <button
-              onClick={logout}
-              className="hover:text-yellow-500 flex items-center ml-4"
-            >
-              <FaSignOutAlt className="inline mr-1" /> Logout
-            </button>
-          </>
+          <button
+            onClick={logout}
+            className="hover:text-yellow-500 flex items-center"
+          >
+            <FaSignOutAlt className="inline mr-1" aria-hidden="true" /> Logout
+          </button>
         )}
       </div>
     </header>

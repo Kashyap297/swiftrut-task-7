@@ -1,3 +1,4 @@
+// src/pages/EditBook.js
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../api/api"; // Axios instance for API requests
@@ -87,82 +88,92 @@ const EditBook = () => {
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Edit Book</h1>
-      {error && <p className="text-red-500 mb-4">{error}</p>}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-gray-700">Title</label>
-          <input
-            type="text"
-            name="title"
-            value={formData.title}
-            onChange={handleInputChange}
-            className="w-full p-2 border border-gray-300 rounded"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-gray-700">Author</label>
-          <input
-            type="text"
-            name="author"
-            value={formData.author}
-            onChange={handleInputChange}
-            className="w-full p-2 border border-gray-300 rounded"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-gray-700">Genre</label>
-          <input
-            type="text"
-            name="genre"
-            value={formData.genre}
-            onChange={handleInputChange}
-            className="w-full p-2 border border-gray-300 rounded"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-gray-700">Publication Date</label>
-          <input
-            type="date"
-            name="publicationDate"
-            value={formData.publicationDate}
-            onChange={handleInputChange}
-            className="w-full p-2 border border-gray-300 rounded"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-gray-700">Available Copies</label>
-          <input
-            type="number"
-            name="availableCopies"
-            value={formData.availableCopies}
-            onChange={handleInputChange}
-            className="w-full p-2 border border-gray-300 rounded"
-            min="1"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-gray-700">Upload New Image</label>
-          <input
-            type="file"
-            name="image"
-            onChange={handleImageChange}
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
-        <button
-          type="submit"
-          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
-        >
-          Update Book
-        </button>
-      </form>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
+          Edit Book
+        </h2>
+        {error && <div className="text-red-500 mb-4">{error}</div>}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-gray-700 font-semibold">Title</label>
+            <input
+              type="text"
+              name="title"
+              value={formData.title}
+              onChange={handleInputChange}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 font-semibold">Author</label>
+            <input
+              type="text"
+              name="author"
+              value={formData.author}
+              onChange={handleInputChange}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 font-semibold">Genre</label>
+            <input
+              type="text"
+              name="genre"
+              value={formData.genre}
+              onChange={handleInputChange}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 font-semibold">
+              Publication Date
+            </label>
+            <input
+              type="date"
+              name="publicationDate"
+              value={formData.publicationDate}
+              onChange={handleInputChange}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 font-semibold">
+              Available Copies
+            </label>
+            <input
+              type="number"
+              name="availableCopies"
+              value={formData.availableCopies}
+              onChange={handleInputChange}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
+              min="1"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 font-semibold">
+              Upload New Image
+            </label>
+            <input
+              type="file"
+              name="image"
+              onChange={handleImageChange}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-gray-800 text-white py-2 rounded-lg font-semibold hover:bg-gray-900 transition duration-300"
+          >
+            Update Book
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

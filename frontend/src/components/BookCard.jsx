@@ -12,9 +12,10 @@ const BookCard = ({ book }) => {
 
   return (
     <div
-      onClick={handleClick} // Add onClick handler
-      className="border p-4 rounded shadow-md cursor-pointer hover:bg-gray-100"
+      onClick={handleClick}
+      className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-xl transition-shadow duration-300"
     >
+      {/* Book Image */}
       <img
         src={
           book.imageUrl
@@ -22,12 +23,25 @@ const BookCard = ({ book }) => {
             : "/no-image.png"
         }
         alt={book.title}
-        className="w-full h-48 object-cover mb-4"
+        className="w-full h-96 object-cover"
       />
-      <h2 className="text-xl font-bold">{book.title}</h2>
-      <p className="text-gray-600">{book.author}</p>
-      <p className="text-gray-600">{book.genre}</p>
-      <p className="text-gray-600">Available Copies: {book.availableCopies}</p>
+
+      {/* Book Details */}
+      <div className="p-6 text-center">
+        <h3 className="text-2xl font-semibold text-gray-800 mb-2">
+          {book.title}
+        </h3>
+        <p className="text-gray-500 mb-1">By: {book.author}</p>
+        <p className="text-gray-500 mb-4">Genre : {book.genre}</p>
+        <p className="text-gray-700 mb-4">
+          Available Copies: {book.availableCopies}
+        </p>
+
+        {/* Button */}
+        <button className="text-blue-600 font-medium border border-blue-600 rounded-full py-2 px-6 hover:bg-blue-600 hover:text-white transition duration-300">
+          View Details
+        </button>
+      </div>
     </div>
   );
 };
