@@ -19,7 +19,7 @@ const Header = () => {
       {/* Logo */}
       <div>
         <Link to="/" className="text-2xl font-bold">
-          E-Library
+          E-Library App
         </Link>
       </div>
 
