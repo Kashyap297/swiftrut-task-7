@@ -4,6 +4,7 @@ const Config = require("./config");
 const cors = require("cors");
 const path = require("path");
 const userRoutes = require("./routes/userRoutes");
+const bookRoutes = require("./routes/bookRoutes");
 
 const app = express();
 
@@ -20,12 +21,13 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // dbConnection
 dbConnection();
 
-// api routes
+// API routes
 app.use("/api/users", userRoutes);
+app.use("/api/books", bookRoutes);
 
 app.listen(PORT, (err) => {
   if (err) {
-    console.log(err, "server is not Connected");
+    console.log(err, "Server is not connected");
   }
-  console.log(`listening on port : http://localhost:${PORT}`);
+  console.log(`Listening on port : http://localhost:${PORT}`);
 });
