@@ -9,17 +9,19 @@ import Register from "./pages/Register";
 import PrivateRoute from "./components/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
 import { AuthProvider } from "./context/AuthContext";
+import AddBook from "./pages/AddBook"; // New page for adding e-books
+import MyBooks from "./pages/MyBooks"; // New page to view user-specific books
+import MyBorrowedBooks from "./pages/MyBorrowedBooks"; // New page for borrowed books
 
 function App() {
   return (
     <AuthProvider>
       <Router>
         <Header />
-        <div className="">
+        <div className="p-4">
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Home />} />
-            <Route path="/books" element={<Books />} />
 
             {/* Public routes for Login and Register */}
             <Route element={<PublicRoute />}>
@@ -29,8 +31,9 @@ function App() {
 
             {/* Protected routes */}
             <Route element={<PrivateRoute />}>
-              <Route path="/my-books" element={<div>My Books</div>} />
-              <Route path="/edit-book/:id" element={<div>Edit Book</div>} />
+              <Route path="/add-book" element={<AddBook />} />
+              <Route path="/my-books" element={<MyBooks />} />
+              <Route path="/my-borrowed-books" element={<MyBorrowedBooks />} />
             </Route>
           </Routes>
         </div>
