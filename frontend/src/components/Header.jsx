@@ -74,12 +74,15 @@ const Header = () => {
             </Link>
           </div>
         ) : (
-          <button
-            onClick={logout}
-            className="hover:text-yellow-500 flex items-center"
-          >
-            <FaSignOutAlt className="inline mr-1" aria-hidden="true" /> Logout
-          </button>
+          <div className="flex items-center space-x-4">
+            <span className="text-yellow-300">Hello, {user.username}</span>
+            <button
+              onClick={logout}
+              className="hover:text-yellow-500 flex items-center"
+            >
+              <FaSignOutAlt className="inline mr-1" aria-hidden="true" /> Logout
+            </button>
+          </div>
         )}
       </div>
     </header>
