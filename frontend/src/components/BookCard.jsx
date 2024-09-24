@@ -23,16 +23,19 @@ const BookCard = ({ book }) => {
             : "/no-image.png"
         }
         alt={book.title}
-        className="w-full h-96 object-cover"
+        className="w-full h-64 object-cover"
       />
 
       {/* Book Details */}
-      <div className="p-6 text-center">
+      <div className="p-6 text-left">
         <h3 className="text-2xl font-semibold text-gray-800 mb-2">
           {book.title}
         </h3>
-        <p className="text-gray-500 mb-1">By: {book.author}</p>
-        <p className="text-gray-500 mb-4">Genre : {book.genre}</p>
+        <p className="text-gray-500 mb-1 font-medium">By: {book.author}</p>
+        <p className="text-gray-500 mb-1">Genre: {book.genre}</p>
+        <p className="text-gray-500 mb-1">
+          Published: {new Date(book.publicationDate).toLocaleDateString()}
+        </p>
         <p className="text-gray-700 mb-4">
           Available Copies: {book.availableCopies}
         </p>

@@ -66,8 +66,10 @@ const BookDetails = () => {
   return (
     <div className="container mx-auto p-6">
       <div className="text-center mb-8">
-        <h1 className="text-5xl font-bold text-blue-800">Book Details</h1>
-        <p className="text-gray-600 text-xl mt-2">
+        <h1 className="text-4xl font-bold text-center text-gray-800 mt-5 mb-10">
+          Book Details
+        </h1>
+        <p className="text-gray-600 text-xl">
           Discover the story behind this book
         </p>
       </div>
