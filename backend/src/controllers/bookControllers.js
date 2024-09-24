@@ -15,14 +15,15 @@ const upload = multer({ storage: storage });
 // Create Book with Image Upload
 const addBook = async (req, res) => {
   try {
-    const { title, author, genre, publicationDate } = req.body;
+    const { title, genre, publicationDate } = req.body;
 
     // Get image URL from Multer
     const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
 
+    // Set author as the logged-in user
     const book = await Book.create({
       title,
-      author,
+      author: req.user.id, // Set author to the logged-in user's ID
       genre,
       publicationDate,
       imageUrl, // Save image URL to the database
@@ -117,7 +118,7 @@ const borrowBook = async (req, res) => {
     }
 
     book.available = false;
-    book.borrowedBy = req.user.id;
+    book.borrowedBy = req.user.id; // Set the borrower as the logged-in user
     await book.save();
 
     res.status(200).json({ message: "Book borrowed successfully" });
@@ -147,6 +148,30 @@ const returnBook = async (req, res) => {
   }
 };
 
+// Get all books created by the logged-in user
+const getBooksByCreator = async (req, res) => {
+  try {
+    // Find all books created by the logged-in user (author)
+    const books = await Book.find({ author: req.user.id });
+    res.status(200).json(books);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error retrieving books by creator", error });
+  }
+};
+
+// Get all books borrowed by the logged-in user
+const getBooksByBorrowedUser = async (req, res) => {
+  try {
+    // Find all books borrowed by the logged-in user (borrowedBy)
+    const books = await Book.find({ borrowedBy: req.user.id });
+    res.status(200).json(books);
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving borrowed books", error });
+  }
+};
+
 module.exports = {
   addBook,
   getBooks,
@@ -155,4 +180,6 @@ module.exports = {
   deleteBook,
   borrowBook,
   returnBook,
+  getBooksByCreator,
+  getBooksByBorrowedUser,
 };

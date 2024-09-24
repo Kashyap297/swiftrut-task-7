@@ -7,6 +7,8 @@ const {
   deleteBook,
   borrowBook,
   returnBook,
+  getBooksByCreator, // New function for books by creator
+  getBooksByBorrowedUser, // New function for books by borrowed user
 } = require("../controllers/bookControllers");
 const { protect } = require("../middlewares/authMiddleware"); // Import Auth Middleware
 const upload = require("../middlewares/uploadMiddleware"); // Import Shared Multer Middleware
@@ -18,6 +20,12 @@ router.post("/", protect, upload.single("image"), addBook);
 
 // Get all books (Public route)
 router.get("/", getBooks);
+
+// Get all books created by the logged-in user (Protected route)
+router.get("/mycreatedbooks", protect, getBooksByCreator); // New route for books created by the user
+
+// Get all books borrowed by the logged-in user (Protected route)
+router.get("/myborrowedbooks", protect, getBooksByBorrowedUser); // New route for books borrowed by the user
 
 // Get book by ID (Public route)
 router.get("/:id", getBookById);
