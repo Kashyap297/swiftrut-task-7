@@ -132,7 +132,7 @@ const BookDetails = () => {
               <img
                 src={
                   book.imageUrl
-                    ? `http://localhost:8000${book.imageUrl}`
+                    ? `https://swiftrut-task-7.onrender.com${book.imageUrl}`
                     : "/no-image.png"
                 }
                 alt={book.title}

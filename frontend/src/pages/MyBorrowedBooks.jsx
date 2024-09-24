@@ -44,7 +44,7 @@ const MyBorrowedBooks = () => {
     <div className="bg-gray-100 min-h-screen py-12">
       <div className="container mx-auto p-8">
         <h1 className="text-4xl font-bold text-center text-gray-800 mb-12">
-          This is your bookshelf
+          My Borrowed Books
         </h1>
         {borrowedBooks.length === 0 ? (
           <p className="text-center text-gray-600">
@@ -61,7 +61,7 @@ const MyBorrowedBooks = () => {
                   <img
                     src={
                       book.imageUrl
-                        ? `http://localhost:8000${book.imageUrl}`
+                        ? `https://swiftrut-task-7.onrender.com${book.imageUrl}`
                         : "/no-image.png"
                     }
                     alt={book.title}

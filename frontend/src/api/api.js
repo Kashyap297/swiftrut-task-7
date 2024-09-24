@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Create an Axios instance with the base URL for your API
 const api = axios.create({
-  baseURL: "http://localhost:8000/api", // Update with your actual backend URL
+  baseURL: "https://swiftrut-task-7.onrender.com/api", // Update with your actual backend URL
 });
 
 // Export baseURL for potential use in other components
